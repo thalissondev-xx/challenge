@@ -11,26 +11,31 @@ import br.com.challenge.models.Resolution;
 
 public class BestResolution {
 
+    static Resolution resolutionAux;
+    static int width = Device.getWidth();
+    static int diffAux = 50000;
+
     public static Resolution search(List<Images> images) {
         List<Resolution> resolutions = images.get(0).getResolutions();
-        Resolution resolutionAux = null;
 
-        int width = Device.getWidth();
-        int diffAux = 50000;
+        // Add the original source too
+        resolutions.add(new Resolution(
+                images.get(0).getSource().getUrl(),
+                images.get(0).getSource().getWidth(),
+                images.get(0).getSource().getHeight()
+        ));
 
-        for (Resolution r : resolutions) {
+        resolutions.forEach(r -> {
             int diff = r.getWidth() - width;
 
-            // Negative?
-            if (diff < 0) {
-                diff *= -1;
-            }
+            // Check if is negative
+            if (diff < 0) diff *= -1;
 
             if (diff <= diffAux) {
                 diffAux = diff;
                 resolutionAux = r;
             }
-        }
+        });
 
         return resolutionAux;
     }

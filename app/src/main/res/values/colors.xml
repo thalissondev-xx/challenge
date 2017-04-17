@@ -2,7 +2,9 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+
+    <!-- Color default #FF408 -->
+    <color name="colorAccent">#ff8239</color>
 
     <color name="colorTextItemList">#8b8b8b</color>
 </resources>

@@ -10,6 +10,12 @@ public class Resolution {
     int width;
     int height;
 
+    public Resolution(String url, int width, int height) {
+        this.url = url;
+        this.width = width;
+        this.height = height;
+    }
+
     public String getUrl() {
         return url;
     }

@@ -11,8 +11,8 @@ import br.com.challenge.networking.RedditService;
 
 public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListener {
 
-    private String rowJson = "1";
-    private String limit = "20";
+    private final String rowJson = "1";
+    private final String limit = "20";
     private String after = null;
 
     PostsInteractor interactor;
@@ -37,6 +37,10 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
     @Override
     public void onSuccess(RedditDataResponse dataResponse) {
 
+        // Update the variable "after" for load more
+        after = dataResponse.getAfter();
+
+        // Set the adapter
         view.setAdapter(dataResponse.getChildren());
         view.hideLoading();
 

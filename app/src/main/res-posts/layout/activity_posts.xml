@@ -12,18 +12,11 @@
             android:layout_height="match_parent"
             android:id="@+id/rvPosts"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:id="@+id/llProgress"
-            android:gravity="center">
+        <!-- Show the loading data -->
+        <include layout="@layout/loading"/>
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+        <!-- Show this layout when the connection failed -->
+        <include layout="@layout/error"/>
 
     </FrameLayout>
 
