@@ -6,5 +6,7 @@
     <!-- Color default #FF408 -->
     <color name="colorAccent">#ff8239</color>
 
+    <color name="colorDivisor">#e2e2e2</color>
     <color name="colorTextItemList">#8b8b8b</color>
+    <color name="colorTextTitle">#454545</color>
 </resources>

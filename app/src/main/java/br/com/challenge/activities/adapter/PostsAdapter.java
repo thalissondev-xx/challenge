@@ -2,6 +2,7 @@ package br.com.challenge.activities.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,7 @@ public class PostsAdapter extends RecyclerView.Adapter {
 
         // Set the data in views
         holderPosts.title.setText(data.getTitle());
+        holderPosts.author.setText("by " + data.getAuthor());
         holderPosts.numComments.setText(data.getNumCommments());
         holderPosts.createdUTC.setText(Global.timeDiff(data.getCreatedUTC()));
 

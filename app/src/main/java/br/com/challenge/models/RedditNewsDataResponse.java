@@ -10,10 +10,15 @@ public class RedditNewsDataResponse {
 
     private String title;
     private String thumbnail;
+    private String author;
     private PreviewResolution preview;
 
     @SerializedName("num_comments") private String numCommments;
     @SerializedName("created") private long createdUTC;
+
+    public String getAuthor() {
+        return author;
+    }
 
     public String getTitle() {
         return title;

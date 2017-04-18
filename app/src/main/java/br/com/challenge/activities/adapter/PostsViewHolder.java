@@ -19,6 +19,7 @@ public class PostsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvNumberOfComments) TextView numComments;
     @BindView(R.id.tvUTC) TextView createdUTC;
     @BindView(R.id.ivPost) ImageView thumbnail;
+    @BindView(R.id.tvAuthor) TextView author;
 
     public PostsViewHolder(View itemView) {
         super(itemView);
