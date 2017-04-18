@@ -2,10 +2,11 @@ package br.com.challenge.activities.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.squareup.picasso.Picasso;
 
@@ -28,6 +29,7 @@ public class PostsAdapter extends RecyclerView.Adapter {
     private List<RedditChildrenResponse> list;
     private final int VIEW_PROG = 0;
     private final int VIEW_ITEM = 1;
+    private int lastPosition = -1;
 
     public PostsAdapter(Context context, List<RedditChildrenResponse> list) {
         this.context = context;
@@ -65,6 +67,12 @@ public class PostsAdapter extends RecyclerView.Adapter {
                 setHolderProgress(holder);
                 break;
         }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        holder.itemView.clearAnimation();
     }
 
     @Override
@@ -111,11 +119,22 @@ public class PostsAdapter extends RecyclerView.Adapter {
             // Remove the image view when not have a image
             holderPosts.thumbnail.setVisibility(View.GONE);
         }
+
+        setAnimation(holder.itemView, position);
+
     }
 
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    private void setAnimation(View viewToAnimate, int position) {
+        Animation animation = AnimationUtils.loadAnimation(context, (position > lastPosition) ?
+                R.anim.up_from_bottom : R.anim.down_from_top);
+        viewToAnimate.startAnimation(animation);
+
+        lastPosition = position;
     }
 
 }

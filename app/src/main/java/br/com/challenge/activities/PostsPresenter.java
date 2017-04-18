@@ -32,7 +32,7 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
     public void request(boolean loadMore) {
 
         // If reload is true, so reload the list
-        if (!loadMore) {
+        if (!loadMore || after == null) {
             after = null;
             view.showLoading();
         }

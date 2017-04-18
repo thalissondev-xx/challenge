@@ -1,5 +1,7 @@
 package br.com.challenge.activities;
 
+import android.util.Log;
+
 import br.com.challenge.models.RedditNewsResponse;
 import br.com.challenge.networking.RedditService;
 import rx.Subscriber;
