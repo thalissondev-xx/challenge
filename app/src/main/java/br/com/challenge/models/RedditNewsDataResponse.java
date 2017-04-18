@@ -13,7 +13,7 @@ public class RedditNewsDataResponse {
     private PreviewResolution preview;
 
     @SerializedName("num_comments") private String numCommments;
-    @SerializedName("create_utc") private String createdUTC;
+    @SerializedName("created") private long createdUTC;
 
     public String getTitle() {
         return title;
@@ -27,7 +27,7 @@ public class RedditNewsDataResponse {
         return numCommments;
     }
 
-    public String getCreatedUTC() {
+    public long getCreatedUTC() {
         return createdUTC;
     }
 

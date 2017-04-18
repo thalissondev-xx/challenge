@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import br.com.challenge.models.RedditDataResponse;
 import br.com.challenge.networking.RedditService;
+import br.com.challenge.utils.Global;
 
 /**
  * Created by thalissonestrela on 4/16/17.
@@ -12,7 +13,7 @@ import br.com.challenge.networking.RedditService;
 public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListener {
 
     private final String rowJson = "1";
-    private final String limit = "20";
+    public final String limit = "20";
     private String after = null;
 
     PostsInteractor interactor;
@@ -28,8 +29,12 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
 
     }
 
-    public void request() {
+    public void request(boolean loadMore) {
 
+        // If reload is true, so reload the list
+        if (!loadMore) after = null;
+
+        view.showLoading();
         interactor.list(after, limit, rowJson, service, this);
 
     }
@@ -48,6 +53,12 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
 
     @Override
     public void onError() {
+
+        String msg = (!Global.isOnline()) ?
+                "Your internet connection may be in trouble" :
+                "Internal problems, please try again";
+
+        view.showError(msg);
 
     }
 

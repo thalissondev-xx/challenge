@@ -15,6 +15,7 @@ import br.com.challenge.models.RedditChildrenResponse;
 import br.com.challenge.models.RedditNewsDataResponse;
 import br.com.challenge.models.Resolution;
 import br.com.challenge.utils.BestResolution;
+import br.com.challenge.utils.Global;
 
 /**
  * Created by thalissonestrela on 4/16/17.
@@ -44,9 +45,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsViewHolder> {
         // Set the data in views
         holder.title.setText(data.getTitle());
         holder.numComments.setText(data.getNumCommments());
-        holder.createdUTC.setText(data.getCreatedUTC());
+        holder.createdUTC.setText(Global.timeDiff(data.getCreatedUTC()));
 
-        if (!data.getThumbnail().equals("self")) {
+        if (!data.getThumbnail().equals("self") && data.getPreview() != null) {
 
             // Get the image with the best resolution
             Resolution resolution = BestResolution.search(data.getPreview().getImages());

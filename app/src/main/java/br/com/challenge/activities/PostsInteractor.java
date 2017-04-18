@@ -1,7 +1,5 @@
 package br.com.challenge.activities;
 
-import android.util.Log;
-
 import br.com.challenge.models.RedditNewsResponse;
 import br.com.challenge.networking.RedditService;
 import rx.Subscriber;
@@ -26,13 +24,11 @@ public class PostsInteractor implements PostsMVP.Interactor {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<RedditNewsResponse>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
+                    public void onCompleted() { }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.i("youse", "error: " + e.getMessage());
+                        listener.onError();
                     }
 
                     @Override

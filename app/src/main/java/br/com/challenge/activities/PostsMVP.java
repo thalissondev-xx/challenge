@@ -15,7 +15,7 @@ public interface PostsMVP {
 
     interface View extends BaseView {
 
-        void requestList();
+        void requestList(boolean loadMore);
         void setAdapter(List<RedditChildrenResponse> list);
 
     }

@@ -49,6 +49,7 @@ dependencies {
     compile 'com.android.support:support-annotations:24.1.1'
     compile 'com.android.support:cardview-v7:24.1.1'
     compile 'com.android.support:recyclerview-v7:24.1.1'
+    compile 'com.android.support:design:24.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // Butter Knife
@@ -81,4 +82,7 @@ dependencies {
 
     // Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    // Endless
+    compile 'com.github.pwittchen:infinitescroll:0.0.1'
 }
