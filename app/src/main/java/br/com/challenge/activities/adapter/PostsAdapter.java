@@ -31,6 +31,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsViewHolder> {
         this.list = list;
     }
 
+    public void addAll(List<RedditChildrenResponse> addList) {
+        list.addAll(addList);
+        notifyDataSetChanged();
+    }
+
     @Override
     public PostsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);

@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,8 +31,8 @@ import butterknife.ButterKnife;
 public class PostsActivity extends AppCompatActivity implements PostsMVP.View {
 
     // Adapter of posts
-    PostsAdapter adapter;
-    List<RedditChildrenResponse> list;
+    PostsAdapter adapter = null;
+    boolean loadMoreRequest = true;
 
     // Views
     @BindView(R.id.rvPosts) RecyclerView recyclerView;
@@ -42,7 +41,6 @@ public class PostsActivity extends AppCompatActivity implements PostsMVP.View {
     @BindView(R.id.tvTryAgain) TextView tvTryAgain;
     @BindView(R.id.tvErrorMessage) TextView tvErrorMessage;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.pbLoadMore) ProgressBar pbLoadMore;
 
     // Presenter
     @Inject PostsPresenter presenter;
@@ -76,13 +74,16 @@ public class PostsActivity extends AppCompatActivity implements PostsMVP.View {
 
             @Override
             public void onScrolledToEnd(int firstVisibleItemPosition) {
-                requestList(true);
+                if (loadMoreRequest) {
+                    loadMoreRequest = false;
+                    requestList(true);
+                }
             }
 
         });
 
         // Click for try again
-        tvTryAgain.setOnClickListener(v -> requestList(false));
+        tvTryAgain.setOnClickListener(v -> requestList(true));
 
         // Request the list of posts
         requestList(false);
@@ -113,27 +114,29 @@ public class PostsActivity extends AppCompatActivity implements PostsMVP.View {
 
     @Override
     public void requestList(boolean loadMore) {
+        if (!loadMore) {
+            adapter = null;
+        }
+
         presenter.request(loadMore);
     }
 
     @Override
-    public void setAdapter(List<RedditChildrenResponse> listItems) {
-        if (list == null || list.size() == 0) {
+    public void setAdapter(List<RedditChildrenResponse> list) {
 
-            // Create instance
-            list = new ArrayList<>();
+        // Now can load more
+        loadMoreRequest = true;
 
-            // Add new items
+        // If not null, so add items in list and not create the new adapter
+        if (adapter != null) {
+            adapter.addAll(list);
+        } else {
 
             // Create the adapter
             adapter = new PostsAdapter(this, list);
             recyclerView.setAdapter(adapter);
-        } else {
-            list.clear();
-            list.addAll(listItems);
-            adapter.notifyDataSetChanged();
         }
-}
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

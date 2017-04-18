@@ -32,9 +32,11 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
     public void request(boolean loadMore) {
 
         // If reload is true, so reload the list
-        if (!loadMore) after = null;
+        if (!loadMore) {
+            after = null;
+            view.showLoading();
+        }
 
-        view.showLoading();
         interactor.list(after, limit, rowJson, service, this);
 
     }
