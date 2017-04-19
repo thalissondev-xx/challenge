@@ -5,39 +5,32 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/baseAppbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Toolbar -->
+        <include layout="@layout/toolbar"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/baseAppbarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- Toolbar -->
-            <include layout="@layout/toolbar"/>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <FrameLayout
+        <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:id="@+id/rvPosts"/>
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/rvPosts"/>
+        <!-- Show the loading data -->
+        <include layout="@layout/loading"/>
 
-            <!-- Show the loading data -->
-            <include layout="@layout/loading"/>
+        <!-- Show this layout when the connection failed -->
+        <include layout="@layout/error"/>
 
-            <!-- Show this layout when the connection failed -->
-            <include layout="@layout/error"/>
-
-        </FrameLayout>
-
-    </LinearLayout>
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

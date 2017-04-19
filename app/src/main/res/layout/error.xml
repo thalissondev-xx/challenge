@@ -5,7 +5,8 @@
     android:background="@android:color/white"
     android:id="@+id/llError"
     android:gravity="center"
-    android:visibility="gone">
+    android:visibility="gone"
+    android:layout_marginTop="@dimen/actionBar">
 
     <ImageView
         android:layout_width="wrap_content"
