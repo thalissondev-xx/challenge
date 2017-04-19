@@ -1,4 +1,4 @@
-package br.com.challenge.activities.adapter;
+package br.com.challenge.activities.posts.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,7 +13,6 @@ import butterknife.ButterKnife;
  */
 
 public class PostsProgressViewHolder extends RecyclerView.ViewHolder {
-
     @BindView(R.id.pbFooterProgress) ProgressBar progressBar;
 
     public PostsProgressViewHolder(View itemView) {

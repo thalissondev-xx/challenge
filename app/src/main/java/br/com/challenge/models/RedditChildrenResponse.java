@@ -5,7 +5,6 @@ package br.com.challenge.models;
  */
 
 public class RedditChildrenResponse {
-
     private RedditNewsDataResponse data;
 
     public RedditNewsDataResponse getData() {

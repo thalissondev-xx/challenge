@@ -1,4 +1,4 @@
-package br.com.challenge.activities;
+package br.com.challenge.activities.posts;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,9 +20,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.challenge.R;
-import br.com.challenge.activities.adapter.PostsAdapter;
-import br.com.challenge.activities.injection.DaggerPostsComponent;
-import br.com.challenge.activities.injection.PostsModule;
+import br.com.challenge.activities.posts.adapter.PostsAdapter;
+import br.com.challenge.activities.posts.injection.DaggerPostsComponent;
+import br.com.challenge.activities.posts.injection.PostsModule;
 import br.com.challenge.models.RedditChildrenResponse;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -155,5 +155,4 @@ public class PostsActivity extends AppCompatActivity implements PostsMVP.View {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

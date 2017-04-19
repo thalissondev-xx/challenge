@@ -1,6 +1,4 @@
-package br.com.challenge.activities;
-
-import android.util.Log;
+package br.com.challenge.activities.posts;
 
 import br.com.challenge.models.RedditNewsResponse;
 import br.com.challenge.networking.RedditService;
@@ -14,7 +12,6 @@ import rx.schedulers.Schedulers;
  */
 
 public class PostsInteractor implements PostsMVP.Interactor {
-
     private Subscription subscription;
 
     @Override
@@ -47,5 +44,4 @@ public class PostsInteractor implements PostsMVP.Interactor {
             subscription.unsubscribe();
         }
     }
-
 }

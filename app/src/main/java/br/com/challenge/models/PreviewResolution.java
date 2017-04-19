@@ -7,11 +7,9 @@ import java.util.List;
  */
 
 public class PreviewResolution {
-
     List<Images> images;
 
     public List<Images> getImages() {
         return images;
     }
-
 }

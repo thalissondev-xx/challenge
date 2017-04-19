@@ -5,10 +5,8 @@ package br.com.challenge.base;
  */
 
 public interface BaseView {
-
     void showLoading();
     void hideLoading();
     void showError(String message);
     void hideError();
-
 }

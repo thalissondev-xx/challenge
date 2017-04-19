@@ -10,7 +10,6 @@ import br.com.challenge.models.Resolution;
  */
 
 public class BestResolution {
-
     public static Resolution search(List<Images> images) {
         List<Resolution> resolutions = images.get(0).getResolutions();
         Resolution resolutionAux = null;
@@ -42,5 +41,4 @@ public class BestResolution {
 
         return resolutionAux;
     }
-
 }

@@ -1,4 +1,4 @@
-package br.com.challenge.activities.adapter;
+package br.com.challenge.activities.posts.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,7 +14,6 @@ import butterknife.ButterKnife;
  */
 
 public class PostsViewHolder extends RecyclerView.ViewHolder {
-
     @BindView(R.id.tvTitle) TextView title;
     @BindView(R.id.tvNumberOfComments) TextView numComments;
     @BindView(R.id.tvUTC) TextView createdUTC;

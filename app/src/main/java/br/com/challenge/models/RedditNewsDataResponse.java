@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class RedditNewsDataResponse {
-
     private String title;
     private String thumbnail;
     private String author;
@@ -39,5 +38,4 @@ public class RedditNewsDataResponse {
     public PreviewResolution getPreview() {
         return preview;
     }
-
 }

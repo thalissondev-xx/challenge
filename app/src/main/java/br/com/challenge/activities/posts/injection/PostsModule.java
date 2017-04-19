@@ -1,11 +1,9 @@
-package br.com.challenge.activities.injection;
-
-import android.app.Activity;
+package br.com.challenge.activities.posts.injection;
 
 import javax.inject.Singleton;
 
-import br.com.challenge.activities.PostsActivity;
-import br.com.challenge.activities.PostsInteractor;
+import br.com.challenge.activities.posts.PostsActivity;
+import br.com.challenge.activities.posts.PostsInteractor;
 import br.com.challenge.networking.RedditService;
 import br.com.challenge.networking.ServiceFactory;
 import dagger.Module;
@@ -17,7 +15,6 @@ import dagger.Provides;
 
 @Module
 public class PostsModule {
-
     PostsActivity activity;
 
     public PostsModule(PostsActivity activity) {
@@ -41,5 +38,4 @@ public class PostsModule {
     PostsActivity provideActivity() {
         return activity;
     }
-
 }

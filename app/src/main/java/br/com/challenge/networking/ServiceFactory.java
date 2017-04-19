@@ -10,9 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ServiceFactory {
-
     public RedditService createAPI() {
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RedditService.SERVICE_ENDPOINT)
                 .client(new OkHttpClient())
@@ -22,5 +20,4 @@ public class ServiceFactory {
 
         return retrofit.create(RedditService.class);
     }
-
 }

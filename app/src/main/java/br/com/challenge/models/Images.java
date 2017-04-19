@@ -7,7 +7,6 @@ import java.util.List;
  */
 
 public class Images {
-
     Source source;
     List<Resolution> resolutions;
 
@@ -18,5 +17,4 @@ public class Images {
     public List<Resolution> getResolutions() {
         return resolutions;
     }
-
 }

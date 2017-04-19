@@ -1,4 +1,4 @@
-package br.com.challenge.activities.adapter;
+package br.com.challenge.activities.posts.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +24,6 @@ import br.com.challenge.utils.Global;
  */
 
 public class PostsAdapter extends RecyclerView.Adapter {
-
     private Context context;
     private List<RedditChildrenResponse> list;
     private final int VIEW_PROG = 0;
@@ -95,7 +94,6 @@ public class PostsAdapter extends RecyclerView.Adapter {
 
     private void setHolderPosts(RecyclerView.ViewHolder holder, int position) {
         PostsViewHolder holderPosts = (PostsViewHolder) holder;
-
         RedditNewsDataResponse data = list.get(position).getData();
 
         // Set the data in views
@@ -121,7 +119,6 @@ public class PostsAdapter extends RecyclerView.Adapter {
         }
 
         setAnimation(holder.itemView, position);
-
     }
 
     @Override
@@ -136,5 +133,4 @@ public class PostsAdapter extends RecyclerView.Adapter {
 
         lastPosition = position;
     }
-
 }

@@ -5,7 +5,6 @@ package br.com.challenge.models;
  */
 
 public class Source {
-
     String url;
     int width;
     int height;
@@ -21,5 +20,4 @@ public class Source {
     public int getHeight() {
         return height;
     }
-
 }

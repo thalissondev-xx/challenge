@@ -1,4 +1,4 @@
-package br.com.challenge.activities;
+package br.com.challenge.activities.posts;
 
 import javax.inject.Inject;
 
@@ -11,8 +11,7 @@ import br.com.challenge.utils.Global;
  */
 
 public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListener {
-
-    private final String rowJson = "1";
+    public final String rowJson = "1";
     public final String limit = "20";
     private String after = null;
 
@@ -22,11 +21,9 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
 
     @Inject
     public PostsPresenter(PostsActivity view, PostsInteractor interactor, RedditService service) {
-
         this.interactor = interactor;
         this.service = service;
         this.view = view;
-
     }
 
     public void request(boolean loadMore) {
@@ -38,7 +35,6 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
         }
 
         interactor.list(after, limit, rowJson, service, this);
-
     }
 
     @Override
@@ -50,18 +46,14 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
         // Set the adapter
         view.setAdapter(dataResponse.getChildren());
         view.hideLoading();
-
     }
 
     @Override
     public void onError() {
-
         String msg = (!Global.isOnline()) ?
                 "Your internet connection may be in trouble" :
                 "Internal problems, please try again";
 
         view.showError(msg);
-
     }
-
 }

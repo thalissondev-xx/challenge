@@ -5,7 +5,6 @@ package br.com.challenge.models;
  */
 
 public class Resolution {
-
     String url;
     int width;
     int height;

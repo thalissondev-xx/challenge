@@ -1,8 +1,8 @@
-package br.com.challenge.activities.injection;
+package br.com.challenge.activities.posts.injection;
 
 import javax.inject.Singleton;
 
-import br.com.challenge.activities.PostsActivity;
+import br.com.challenge.activities.posts.PostsActivity;
 import dagger.Component;
 
 /**
@@ -10,9 +10,9 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = PostsModule.class)
+@Component(
+        modules = PostsModule.class
+)
 public interface PostsComponent {
-
     void inject(PostsActivity activity);
-
 }

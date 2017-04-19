@@ -5,7 +5,6 @@ package br.com.challenge.models;
  */
 
 public class RedditNewsResponse {
-
     private RedditDataResponse data;
 
     public RedditDataResponse getData() {
@@ -15,5 +14,4 @@ public class RedditNewsResponse {
     public void setData(RedditDataResponse data) {
         this.data = data;
     }
-
 }

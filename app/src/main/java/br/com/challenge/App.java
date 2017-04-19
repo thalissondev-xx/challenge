@@ -8,7 +8,6 @@ import android.content.Context;
  */
 
 public class App extends Application {
-
     private static App instance;
 
     @Override
@@ -20,5 +19,4 @@ public class App extends Application {
     public static Context getInstance() {
         return instance;
     }
-
 }

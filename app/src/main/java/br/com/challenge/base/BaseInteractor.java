@@ -5,7 +5,5 @@ package br.com.challenge.base;
  */
 
 public interface BaseInteractor {
-
     void unSubscribe();
-
 }

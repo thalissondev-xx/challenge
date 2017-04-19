@@ -7,7 +7,6 @@ import java.util.List;
  */
 
 public class RedditDataResponse {
-
     private List<RedditChildrenResponse> children;
     private String after;
     private String before;
@@ -23,5 +22,4 @@ public class RedditDataResponse {
     public String getBefore() {
         return before;
     }
-
 }

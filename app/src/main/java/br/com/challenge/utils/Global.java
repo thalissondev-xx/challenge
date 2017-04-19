@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.Html;
-import android.text.Spanned;
 import android.view.Display;
 import android.view.WindowManager;
 
@@ -19,7 +17,6 @@ import br.com.challenge.App;
  */
 
 public class Global {
-
     public static int getDeviceWidth() {
         WindowManager wm = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -60,5 +57,4 @@ public class Global {
 
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
-
 }
