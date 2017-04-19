@@ -16,10 +16,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("/Volumes/Macintosh\\ Archives/android.jks")
-            storePassword "116341"
-            keyAlias "challenge"
-            keyPassword "116341"
+            storeFile System.getenv("KEYFILE")
+            keyAlias System.getenv("KEYALIAS")
+            storePassword System.getenv("KSTOREPWD")
+            keyPassword System.getenv("KEYPWD")
         }
     }
 
