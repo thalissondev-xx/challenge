@@ -16,7 +16,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile System.getenv("KEYFILE")
+            storeFile file(String.valueOf(System.getenv("KEYFILE")))
             keyAlias System.getenv("KEYALIAS")
             storePassword System.getenv("KSTOREPWD")
             keyPassword System.getenv("KEYPWD")
@@ -68,7 +68,10 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     // Butter Knife
-    compile 'com.jakewharton:butterknife:8.5.1'
+    compile ('com.jakewharton:butterknife:8.5.1') {
+        exclude module: 'support-compat'
+    }
+
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
     // Dagger 2
