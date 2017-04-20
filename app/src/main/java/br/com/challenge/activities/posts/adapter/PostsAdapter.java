@@ -149,6 +149,8 @@ public class PostsAdapter extends RecyclerView.Adapter {
     private void setClickListener(View view, String url) {
         view.setOnClickListener(v -> {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setStartAnimations(activity, R.anim.slide_in_right, R.anim.slide_out_left);
+            builder.setExitAnimations(activity, R.anim.slide_in_left, R.anim.slide_out_right);
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.launchUrl(activity, Uri.parse(url));
         });
