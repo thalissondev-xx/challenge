@@ -10,6 +10,7 @@ public class RedditNewsDataResponse {
     private String title;
     private String thumbnail;
     private String author;
+    private String url;
     private PreviewResolution preview;
 
     @SerializedName("num_comments") private String numCommments;
@@ -33,6 +34,10 @@ public class RedditNewsDataResponse {
 
     public long getCreatedUTC() {
         return createdUTC;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public PreviewResolution getPreview() {

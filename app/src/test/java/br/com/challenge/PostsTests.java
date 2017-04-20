@@ -1,4 +1,4 @@
-package br.com.challenge.activities;
+package br.com.challenge;
 
 import com.google.gson.Gson;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 import br.com.challenge.models.RedditNewsResponse;
 import br.com.challenge.networking.RedditService;
 import br.com.challenge.networking.ServiceFactory;
-import rx.functions.Action1;
+
 import rx.schedulers.Schedulers;
 
 import static org.hamcrest.core.Is.is;

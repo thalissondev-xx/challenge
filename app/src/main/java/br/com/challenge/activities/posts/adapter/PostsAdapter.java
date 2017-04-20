@@ -1,7 +1,12 @@
 package br.com.challenge.activities.posts.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +29,14 @@ import br.com.challenge.utils.Global;
  */
 
 public class PostsAdapter extends RecyclerView.Adapter {
-    private Context context;
+    private Activity activity;
     private List<RedditChildrenResponse> list;
     private final int VIEW_PROG = 0;
     private final int VIEW_ITEM = 1;
     private int lastPosition = -1;
 
-    public PostsAdapter(Context context, List<RedditChildrenResponse> list) {
-        this.context = context;
+    public PostsAdapter(Activity activity, List<RedditChildrenResponse> list) {
+        this.activity = activity;
         this.list = list;
     }
 
@@ -46,10 +51,10 @@ public class PostsAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_ITEM) {
-            View view = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
+            View view = LayoutInflater.from(activity).inflate(R.layout.list_item, parent, false);
             return new PostsViewHolder(view);
         } else if (viewType == VIEW_PROG) {
-            View view = LayoutInflater.from(context).inflate(R.layout.footer_progress, parent, false);
+            View view = LayoutInflater.from(activity).inflate(R.layout.footer_progress, parent, false);
             return new PostsProgressViewHolder(view);
         }
 
@@ -95,12 +100,19 @@ public class PostsAdapter extends RecyclerView.Adapter {
     private void setHolderPosts(RecyclerView.ViewHolder holder, int position) {
         PostsViewHolder holderPosts = (PostsViewHolder) holder;
         RedditNewsDataResponse data = list.get(position).getData();
+        String url = list.get(position).getData().getUrl();
 
         // Set the data in views
         holderPosts.title.setText(data.getTitle());
         holderPosts.author.setText("by " + data.getAuthor());
         holderPosts.numComments.setText(data.getNumCommments());
         holderPosts.createdUTC.setText(Global.timeDiff(data.getCreatedUTC()));
+
+        // Click
+        if (url != null && !url.equals("") &&
+                (url.contains("https://") || url.contains("http://"))) {
+            setClickListener(holder.itemView, url);
+        }
 
         if (!data.getThumbnail().equals("self") && data.getPreview() != null) {
 
@@ -110,7 +122,7 @@ public class PostsAdapter extends RecyclerView.Adapter {
             // Set the height
             holderPosts.thumbnail.setMinimumHeight(resolution.getHeight());
 
-            Picasso.with(context).load(resolution.getUrl()).into(holderPosts.thumbnail);
+            Picasso.with(activity).load(resolution.getUrl()).into(holderPosts.thumbnail);
             holderPosts.thumbnail.setVisibility(View.VISIBLE);
         } else {
 
@@ -127,10 +139,18 @@ public class PostsAdapter extends RecyclerView.Adapter {
     }
 
     private void setAnimation(View viewToAnimate, int position) {
-        Animation animation = AnimationUtils.loadAnimation(context, (position > lastPosition) ?
+        Animation animation = AnimationUtils.loadAnimation(activity, (position > lastPosition) ?
                 R.anim.up_from_bottom : R.anim.down_from_top);
         viewToAnimate.startAnimation(animation);
 
         lastPosition = position;
+    }
+
+    private void setClickListener(View view, String url) {
+        view.setOnClickListener(v -> {
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(activity, Uri.parse(url));
+        });
     }
 }
