@@ -20,7 +20,7 @@ public interface PostsMVP {
     interface Presenter {
         interface OnRequestFinishedListener {
             void onSuccess(RedditDataResponse dataResponse);
-            void onError();
+            void onError(String msg);
         }
     }
 

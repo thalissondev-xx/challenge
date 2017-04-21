@@ -17,10 +17,10 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
 
     PostsInteractor interactor;
     RedditService service;
-    PostsActivity view;
+    PostsMVP.View view;
 
     @Inject
-    public PostsPresenter(PostsActivity view, PostsInteractor interactor, RedditService service) {
+    public PostsPresenter(PostsMVP.View view, PostsInteractor interactor, RedditService service) {
         this.interactor = interactor;
         this.service = service;
         this.view = view;
@@ -49,11 +49,7 @@ public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListe
     }
 
     @Override
-    public void onError() {
-        String msg = (!Global.isOnline()) ?
-                "Your internet connection may be in trouble" :
-                "Internal problems, please try again";
-
+    public void onError(String msg) {
         view.showError(msg);
     }
 }

@@ -17,7 +17,12 @@ import br.com.challenge.App;
  */
 
 public class Global {
-    public static int getDeviceWidth() {
+
+    public static Global getInstance() {
+        return new Global();
+    }
+
+    public int getDeviceWidth() {
         WindowManager wm = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -26,7 +31,7 @@ public class Global {
         return size.x;
     }
 
-    public static String timeDiff(long unixTime) {
+    public String timeDiff(long unixTime) {
         Date date = new Date(unixTime * 1000);
         Date currentDate = Calendar.getInstance().getTime();
 
@@ -50,7 +55,7 @@ public class Global {
         else return diffYears + " years ago";
     }
 
-    public static boolean isOnline() {
+    public boolean isOnline() {
         ConnectivityManager cm = (ConnectivityManager) App.getInstance().getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();

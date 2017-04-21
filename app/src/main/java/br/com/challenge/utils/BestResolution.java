@@ -14,7 +14,7 @@ public class BestResolution {
         List<Resolution> resolutions = images.get(0).getResolutions();
         Resolution resolutionAux = null;
 
-        int width = Global.getDeviceWidth();
+        int width = Global.getInstance().getDeviceWidth();
         int diffAux = 50000;
 
         Resolution sourceResolution = new Resolution();

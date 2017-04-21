@@ -2,6 +2,7 @@ package br.com.challenge.activities.posts;
 
 import br.com.challenge.models.RedditNewsResponse;
 import br.com.challenge.networking.RedditService;
+import br.com.challenge.utils.Global;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,7 +28,11 @@ public class PostsInteractor implements PostsMVP.Interactor {
 
                     @Override
                     public void onError(Throwable e) {
-                        listener.onError();
+                        String msg = (!Global.getInstance().isOnline()) ?
+                                "Your internet connection may be in trouble" :
+                                "Internal problems, please try again";
+
+                        listener.onError(msg);
                     }
 
                     @Override

@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import br.com.challenge.activities.posts.PostsActivity;
 import br.com.challenge.activities.posts.PostsInteractor;
+import br.com.challenge.activities.posts.PostsMVP;
 import br.com.challenge.networking.RedditService;
 import br.com.challenge.networking.ServiceFactory;
 import dagger.Module;
@@ -15,10 +16,10 @@ import dagger.Provides;
 
 @Module
 public class PostsModule {
-    PostsActivity activity;
+    PostsMVP.View view;
 
-    public PostsModule(PostsActivity activity) {
-        this.activity = activity;
+    public PostsModule(PostsMVP.View view) {
+        this.view = view;
     }
 
     @Singleton
@@ -35,7 +36,7 @@ public class PostsModule {
 
     @Singleton
     @Provides
-    PostsActivity provideActivity() {
-        return activity;
+    PostsMVP.View provideActivity() {
+        return view;
     }
 }

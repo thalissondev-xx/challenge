@@ -1,12 +1,10 @@
 package br.com.challenge.activities.posts.adapter;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,7 +104,7 @@ public class PostsAdapter extends RecyclerView.Adapter {
         holderPosts.title.setText(data.getTitle());
         holderPosts.author.setText("by " + data.getAuthor());
         holderPosts.numComments.setText(data.getNumCommments());
-        holderPosts.createdUTC.setText(Global.timeDiff(data.getCreatedUTC()));
+        holderPosts.createdUTC.setText(Global.getInstance().timeDiff(data.getCreatedUTC()));
 
         // Click
         if (url != null && !url.equals("") &&
@@ -151,6 +149,7 @@ public class PostsAdapter extends RecyclerView.Adapter {
             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
             builder.setStartAnimations(activity, R.anim.slide_in_right, R.anim.slide_out_left);
             builder.setExitAnimations(activity, R.anim.slide_in_left, R.anim.slide_out_right);
+            builder.setToolbarColor(ContextCompat.getColor(activity, R.color.colorPrimary));
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.launchUrl(activity, Uri.parse(url));
         });
