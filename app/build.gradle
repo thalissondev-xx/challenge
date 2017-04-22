@@ -123,9 +123,6 @@ dependencies {
 
     // Picasso
     compile 'com.squareup.picasso:picasso:2.5.2'
-
-    // Endless
-    compile 'com.github.pwittchen:infinitescroll:0.0.1'
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {

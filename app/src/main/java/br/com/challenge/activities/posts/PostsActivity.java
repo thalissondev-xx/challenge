@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,8 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.github.pwittchen.infinitescroll.library.InfiniteScrollListener;
 
 import java.util.List;
 
@@ -30,8 +29,11 @@ import butterknife.ButterKnife;
 public class PostsActivity extends AppCompatActivity implements PostsMVP.View {
 
     // Adapter of posts
-    PostsAdapter adapter = null;
-    boolean loadMoreRequest = true;
+    private PostsAdapter adapter = null;
+    private boolean loadMoreRequest = true;
+    private int visibleItemCount;
+    private int totalItemCount;
+    private int pastVisibleItems;
 
     // Views
     @BindView(R.id.rvPosts) RecyclerView recyclerView;
@@ -64,28 +66,59 @@ public class PostsActivity extends AppCompatActivity implements PostsMVP.View {
 
         // Config
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
 
-        // RecyclerView listener
-        recyclerView.addOnScrollListener(new InfiniteScrollListener(
-                Integer.parseInt(presenter.limit), linearLayoutManager) {
+        LinearLayoutManager linearManager = new LinearLayoutManager(this);
+        StaggeredGridLayoutManager staggeredManager = new StaggeredGridLayoutManager(2,
+                StaggeredGridLayoutManager.VERTICAL);
 
-            @Override
-            public void onScrolledToEnd(int firstVisibleItemPosition) {
-                if (loadMoreRequest) {
-                    loadMoreRequest = false;
-                    requestList(true);
-                }
-            }
+        // Verify if is a tablet device
+        if (getResources().getBoolean(R.bool.isTablet)) {
+            recyclerView.setLayoutManager(staggeredManager);
+        } else {
+            recyclerView.setLayoutManager(linearManager);
+        }
 
-        });
+        // Set listener RecyclerView
+        rvListener();
 
         // Click for try again
         tvTryAgain.setOnClickListener(v -> requestList(true));
 
         // Request the list of posts
         requestList(false);
+    }
+
+    public void rvListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
+
+                    if (recyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+                        int[] firstVisibleItems = null;
+                        firstVisibleItems = ((StaggeredGridLayoutManager) recyclerView
+                                .getLayoutManager()).findFirstCompletelyVisibleItemPositions(
+                                firstVisibleItems);
+
+                        if(firstVisibleItems != null && firstVisibleItems.length > 0) {
+                            pastVisibleItems = firstVisibleItems[0];
+                        }
+                    } else {
+                        pastVisibleItems = ((LinearLayoutManager) recyclerView
+                                .getLayoutManager()).findFirstVisibleItemPosition();
+                    }
+
+                    if (loadMoreRequest) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            loadMoreRequest = false;
+                            requestList(true);
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override

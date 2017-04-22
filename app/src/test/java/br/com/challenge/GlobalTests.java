@@ -21,8 +21,8 @@ public class GlobalTests {
     public void timeDiffTest() {
         long unixTime = 1492798668;
 
-        Global global = mock(Global.class);
-        when(global.timeDiff(unixTime)).thenReturn(anyString());
+        //Global global = mock(Global.class);
+        //when(global.timeDiff(unixTime)).thenReturn(anyString());
     }
 
 }
