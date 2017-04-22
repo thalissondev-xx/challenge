@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import br.com.challenge.R;
+import br.com.challenge.activities.posts.PostsMVP;
 import br.com.challenge.models.RedditChildrenResponse;
 import br.com.challenge.models.RedditNewsDataResponse;
 import br.com.challenge.models.Resolution;
@@ -32,6 +35,12 @@ public class PostsAdapter extends RecyclerView.Adapter {
     private final int VIEW_PROG = 0;
     private final int VIEW_ITEM = 1;
     private int lastPosition = -1;
+
+    // Endless
+    private boolean loadMoreRequest = true;
+    private int visibleItemCount;
+    private int totalItemCount;
+    private int pastVisibleItems;
 
     public PostsAdapter(Activity activity, List<RedditChildrenResponse> list) {
         this.activity = activity;
@@ -153,5 +162,44 @@ public class PostsAdapter extends RecyclerView.Adapter {
             CustomTabsIntent customTabsIntent = builder.build();
             customTabsIntent.launchUrl(activity, Uri.parse(url));
         });
+    }
+
+    public void scrollListener(RecyclerView recyclerView, PostsMVP.View view) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    visibleItemCount = recyclerView.getLayoutManager().getChildCount();
+                    totalItemCount = recyclerView.getLayoutManager().getItemCount();
+
+                    // Verify if the device is tablet, because if is tablet the list is gridview
+                    if (recyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {
+                        int[] firstVisibleItems = null;
+                        firstVisibleItems = ((StaggeredGridLayoutManager) recyclerView
+                                .getLayoutManager()).findFirstCompletelyVisibleItemPositions(
+                                firstVisibleItems);
+
+                        if(firstVisibleItems != null && firstVisibleItems.length > 0) {
+                            pastVisibleItems = firstVisibleItems[0];
+                        }
+                    } else {
+                        pastVisibleItems = ((LinearLayoutManager) recyclerView
+                                .getLayoutManager()).findFirstVisibleItemPosition();
+                    }
+
+                    // If load data is ended, so load more items
+                    if (loadMoreRequest) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            loadMoreRequest = false;
+                            view.requestList(true);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void listLoaded() {
+        loadMoreRequest = true;
     }
 }

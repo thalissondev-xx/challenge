@@ -16,9 +16,11 @@ public class BestResolution {
         List<Resolution> resolutions = images.get(0).getResolutions();
         Resolution resolutionAux = null;
 
+        // Verify if is a tablet
         boolean tablet = App.getInstance().getResources().getBoolean(R.bool.isTablet);
 
-        // If its tablet, its gridview with 2 columns, so lets divide by 2 the width to fetch a better image
+        // If its tablet, its gridview with 2 columns, so lets divide by 2
+        // the width to fetch a better image
         int width = (!tablet) ? Global.getInstance().getDeviceWidth() :
                 Global.getInstance().getDeviceWidth() / 2;
 
