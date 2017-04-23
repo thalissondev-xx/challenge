@@ -25,6 +25,6 @@ lasted Reddit service posts. (www.reddit.com)
   <b>Phone</b><br>
   <img width="300" style="float:left;" src="/screens/device-2017-04-23-133202.png">
   <img width="300" style="float:left;" src="/screens/device-2017-04-23-133259.png">
-  <br><b>Tablet</b><br>
+  <br><br><b>Tablet</b><br><br>
   <img width="600" src="/screens/device-2017-04-23-133714.png">
 </p>
