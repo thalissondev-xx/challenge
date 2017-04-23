@@ -18,12 +18,8 @@ import br.com.challenge.App;
 
 public class Global {
 
-    public static Global getInstance() {
-        return new Global();
-    }
-
-    public int getDeviceWidth() {
-        WindowManager wm = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
+    public int getDeviceWidth(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -55,8 +51,8 @@ public class Global {
         else return diffYears + " years ago";
     }
 
-    public boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) App.getInstance().getSystemService(
+    public boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 

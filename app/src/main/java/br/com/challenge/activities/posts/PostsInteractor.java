@@ -1,5 +1,6 @@
 package br.com.challenge.activities.posts;
 
+import br.com.challenge.App;
 import br.com.challenge.models.RedditNewsResponse;
 import br.com.challenge.networking.RedditService;
 import br.com.challenge.utils.Global;
@@ -28,7 +29,7 @@ public class PostsInteractor implements PostsMVP.Interactor {
 
                     @Override
                     public void onError(Throwable e) {
-                        String msg = (!Global.getInstance().isOnline()) ?
+                        String msg = (!new Global().isOnline(App.getInstance())) ?
                                 "Your internet connection may be in trouble" :
                                 "Internal problems, please try again";
 

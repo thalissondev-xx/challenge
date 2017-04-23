@@ -152,4 +152,5 @@ public class PostsActivity extends AppCompatActivity implements PostsMVP.View {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

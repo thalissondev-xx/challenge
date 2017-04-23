@@ -1,5 +1,7 @@
 package br.com.challenge.utils;
 
+import android.content.Context;
+
 import java.util.List;
 
 import br.com.challenge.App;
@@ -12,17 +14,17 @@ import br.com.challenge.models.Resolution;
  */
 
 public class BestResolution {
-    public static Resolution search(List<Images> images) {
+    public static Resolution search(Context context, List<Images> images) {
         List<Resolution> resolutions = images.get(0).getResolutions();
         Resolution resolutionAux = null;
 
         // Verify if is a tablet
-        boolean tablet = App.getInstance().getResources().getBoolean(R.bool.isTablet);
+        boolean tablet = context.getResources().getBoolean(R.bool.isTablet);
 
         // If its tablet, its gridview with 2 columns, so lets divide by 2
         // the width to fetch a better image
-        int width = (!tablet) ? Global.getInstance().getDeviceWidth() :
-                Global.getInstance().getDeviceWidth() / 2;
+        int width = (!tablet) ? new Global().getDeviceWidth(context) :
+                new Global().getDeviceWidth(context) / 2;
 
         int diffAux = 50000;
 

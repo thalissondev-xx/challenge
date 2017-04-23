@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import br.com.challenge.App;
 import br.com.challenge.R;
 import br.com.challenge.activities.posts.PostsMVP;
 import br.com.challenge.models.RedditChildrenResponse;
@@ -113,7 +114,7 @@ public class PostsAdapter extends RecyclerView.Adapter {
         holderPosts.title.setText(data.getTitle());
         holderPosts.author.setText("by " + data.getAuthor());
         holderPosts.numComments.setText(data.getNumCommments());
-        holderPosts.createdUTC.setText(Global.getInstance().timeDiff(data.getCreatedUTC()));
+        holderPosts.createdUTC.setText(new Global().timeDiff(data.getCreatedUTC()));
 
         // Click
         if (url != null && !url.equals("") &&
@@ -124,7 +125,8 @@ public class PostsAdapter extends RecyclerView.Adapter {
         if (!data.getThumbnail().equals("self") && data.getPreview() != null) {
 
             // Get the image with the best resolution
-            Resolution resolution = BestResolution.search(data.getPreview().getImages());
+            Resolution resolution = BestResolution.search(App.getInstance(),
+                    data.getPreview().getImages());
 
             // Set the height
             holderPosts.thumbnail.setMinimumHeight(resolution.getHeight());
