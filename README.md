@@ -21,8 +21,10 @@ lasted Reddit service posts. (www.reddit.com)
 
 ## Screens
 
-![](/screens/device-2017-04-23-133202.png)
-![](/screens/device-2017-04-23-133259.png)
-![](/screens/device-2017-04-23-133714.png)
-
-This repo is an implementation of a challenge
+<p align="center">
+  <b>Phone</b><br>
+  <img width="300" style="float:left;" src="/screens/device-2017-04-23-133202.png">
+  <img width="300" style="float:left;" src="/screens/device-2017-04-23-133259.png">
+  <br><b>Tablet</b><br>
+  <img width="605" src="/screens/device-2017-04-23-133714.png">
+</p>
