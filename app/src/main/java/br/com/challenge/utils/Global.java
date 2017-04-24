@@ -9,6 +9,7 @@ import android.view.WindowManager;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import br.com.challenge.App;
 
@@ -28,27 +29,30 @@ public class Global {
     }
 
     public String timeDiff(long unixTime) {
-        Date date = new Date(unixTime * 1000);
-        Date currentDate = Calendar.getInstance().getTime();
+        Date createdAt = new Date(Double.valueOf(unixTime).longValue() * 1000);
+        long elapsed = System.currentTimeMillis() - createdAt.getTime();
 
-        long timeDifferenceMilliseconds = (currentDate.getTime() - date.getTime());
+        long diffSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsed);
+        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(elapsed);
+        long diffHours = TimeUnit.MILLISECONDS.toHours(elapsed);
+        long diffDays = TimeUnit.MILLISECONDS.toDays(elapsed);
+        long diffWeeks = diffDays / 7;
 
-        long diffSeconds = timeDifferenceMilliseconds / 1000;
-        long diffMinutes = timeDifferenceMilliseconds / (60 * 1000);
-        long diffHours = timeDifferenceMilliseconds / (60 * 60 * 1000);
-        long diffDays = timeDifferenceMilliseconds / (60 * 60 * 1000 * 24);
-        long diffWeeks = timeDifferenceMilliseconds / (60 * 60 * 1000 * 24 * 7);
-        long diffMonths = (long) (timeDifferenceMilliseconds / (60 * 60 * 1000 * 24 * 30.41666666));
-        long diffYears = timeDifferenceMilliseconds / ((long)60 * 60 * 1000 * 24 * 365);
-
-        if (diffSeconds < 1) return "less than a second";
-        else if (diffMinutes < 1) return diffSeconds + " seconds ago";
-        else if (diffHours < 1) return diffMinutes + " minutes ago";
-        else if (diffDays < 1) return diffHours + " hours ago";
-        else if (diffWeeks < 1) return diffDays + " days ago";
-        else if (diffMonths < 1) return diffWeeks + " weeks ago";
-        else if (diffYears < 1) return diffMonths + " months ago";
-        else return diffYears + " years ago";
+        if (diffWeeks > 0) {
+            return diffWeeks + " weeks";
+        }
+        else if (diffDays > 0) {
+            return diffDays + " days";
+        }
+        else if (diffHours > 0) {
+            return diffHours + " hours";
+        }
+        else if (diffMinutes > 0) {
+            return diffMinutes + " minutes";
+        }
+        else {
+            return diffSeconds + " seconds";
+        }
     }
 
     public boolean isOnline(Context context) {
