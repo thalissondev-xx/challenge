@@ -7,6 +7,12 @@ This project is a small Reddit Android Client
 Create a native Android app that is able to list and view details of the 
 lasted Reddit service posts. (www.reddit.com)
 
+## Directories
+
+For reports /reports/
+<br>
+For build /app/app-release.apk
+
 ## Libraries used:
 
 - Dagger 2.0.1
