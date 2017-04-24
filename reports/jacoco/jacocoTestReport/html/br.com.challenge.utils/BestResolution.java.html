@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BestResolution.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">br.com.challenge.utils</a> &gt; <span class="el_source">BestResolution.java</span></div><h1>BestResolution.java</h1><pre class="source lang-java linenums">package br.com.challenge.utils;
+
+import android.content.Context;
+
+import java.util.List;
+
+import br.com.challenge.App;
+import br.com.challenge.R;
+import br.com.challenge.models.Images;
+import br.com.challenge.models.Resolution;
+
+/**
+ * Created by thalissonestrela on 4/17/17.
+ */
+
+<span class="nc" id="L16">public class BestResolution {</span>
+    public static Resolution search(Context context, List&lt;Images&gt; images) {
+<span class="nc" id="L18">        List&lt;Resolution&gt; resolutions = images.get(0).getResolutions();</span>
+<span class="nc" id="L19">        Resolution resolutionAux = null;</span>
+
+        // Verify if is a tablet
+<span class="nc" id="L22">        boolean tablet = context.getResources().getBoolean(R.bool.isTablet);</span>
+
+        // If its tablet, its gridview with 2 columns, so lets divide by 2
+        // the width to fetch a better image
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        int width = (!tablet) ? new Global().getDeviceWidth(context) :</span>
+<span class="nc" id="L27">                new Global().getDeviceWidth(context) / 2;</span>
+
+<span class="nc" id="L29">        int diffAux = 50000;</span>
+
+<span class="nc" id="L31">        Resolution sourceResolution = new Resolution();</span>
+<span class="nc" id="L32">        sourceResolution.setUrl(images.get(0).getSource().getUrl());</span>
+<span class="nc" id="L33">        sourceResolution.setWidth(images.get(0).getSource().getWidth());</span>
+<span class="nc" id="L34">        sourceResolution.setHeight(images.get(0).getSource().getHeight());</span>
+
+        // Add the original source too
+<span class="nc" id="L37">        resolutions.add(sourceResolution);</span>
+
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (Resolution r : resolutions) {</span>
+<span class="nc" id="L40">            int diff = r.getWidth() - width;</span>
+
+            // Negative?
+<span class="nc bnc" id="L43" title="All 2 branches missed.">            if (diff &lt; 0) {</span>
+<span class="nc" id="L44">                diff *= -1;</span>
+            }
+
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            if (diff &lt;= diffAux) {</span>
+<span class="nc" id="L48">                diffAux = diff;</span>
+<span class="nc" id="L49">                resolutionAux = r;</span>
+            }
+<span class="nc" id="L51">        }</span>
+
+<span class="nc" id="L53">        return resolutionAux;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PostsInteractor.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">br.com.challenge.activities.posts</a> &gt; <span class="el_source">PostsInteractor.java</span></div><h1>PostsInteractor.java</h1><pre class="source lang-java linenums"><span class="nc" id="L1">package br.com.challenge.activities.posts;</span>
+
+import br.com.challenge.App;
+import br.com.challenge.models.RedditNewsResponse;
+import br.com.challenge.networking.RedditService;
+import br.com.challenge.utils.Global;
+import rx.Subscriber;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+/**
+ * Created by thalissonestrela on 4/16/17.
+ */
+
+<span class="nc" id="L16">public class PostsInteractor implements PostsMVP.Interactor {</span>
+    private Subscription subscription;
+
+    @Override
+    public void list(String after, String limit, String rowJson, RedditService service,
+                     final PostsMVP.Presenter.OnRequestFinishedListener listener) {
+
+<span class="nc" id="L23">        subscription = service.getListNews(after, limit, rowJson)</span>
+<span class="nc" id="L24">                .subscribeOn(Schedulers.io())</span>
+<span class="nc" id="L25">                .observeOn(AndroidSchedulers.mainThread())</span>
+<span class="nc" id="L26">                .subscribe(new Subscriber&lt;RedditNewsResponse&gt;() {</span>
+                    @Override
+<span class="nc" id="L28">                    public void onCompleted() { }</span>
+
+                    @Override
+                    public void onError(Throwable e) {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">                        String msg = (!new Global().isOnline(App.getInstance())) ?</span>
+<span class="nc" id="L33">                                &quot;Your internet connection may be in trouble&quot; :</span>
+<span class="nc" id="L34">                                &quot;Internal problems, please try again&quot;;</span>
+
+<span class="nc" id="L36">                        listener.onError(msg);</span>
+<span class="nc" id="L37">                    }</span>
+
+<span class="nc" id="L39">                    @Override</span>
+                    public void onNext(RedditNewsResponse redditNewsResponse) {
+<span class="nc" id="L41">                        listener.onSuccess(redditNewsResponse.getData());</span>
+<span class="nc" id="L42">                    }</span>
+                });
+
+<span class="nc" id="L45">    }</span>
+
+    @Override
+    public void unSubscribe() {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (!subscription.isUnsubscribed()) {</span>
+<span class="nc" id="L50">            subscription.unsubscribe();</span>
+        }
+<span class="nc" id="L52">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201603010439</span></div></body></html>

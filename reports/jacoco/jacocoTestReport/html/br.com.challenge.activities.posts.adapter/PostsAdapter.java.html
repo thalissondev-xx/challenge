@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostsAdapter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">br.com.challenge.activities.posts.adapter</a> &gt; <span class="el_source">PostsAdapter.java</span></div><h1>PostsAdapter.java</h1><pre class="source lang-java linenums">package br.com.challenge.activities.posts.adapter;
+
+import android.app.Activity;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import br.com.challenge.App;
+import br.com.challenge.R;
+import br.com.challenge.activities.posts.PostsMVP;
+import br.com.challenge.models.RedditChildrenResponse;
+import br.com.challenge.models.RedditNewsDataResponse;
+import br.com.challenge.models.Resolution;
+import br.com.challenge.utils.BestResolution;
+import br.com.challenge.utils.Global;
+
+/**
+ * Created by thalissonestrela on 4/16/17.
+ */
+
+public class PostsAdapter extends RecyclerView.Adapter {
+    private Activity activity;
+    private List&lt;RedditChildrenResponse&gt; list;
+<span class="nc" id="L36">    private final int VIEW_PROG = 0;</span>
+<span class="nc" id="L37">    private final int VIEW_ITEM = 1;</span>
+<span class="nc" id="L38">    private int lastPosition = -1;</span>
+
+    // Endless
+<span class="nc" id="L41">    private boolean loadMoreRequest = true;</span>
+    private int visibleItemCount;
+    private int totalItemCount;
+    private int pastVisibleItems;
+
+<span class="nc" id="L46">    public PostsAdapter(Activity activity, List&lt;RedditChildrenResponse&gt; list) {</span>
+<span class="nc" id="L47">        this.activity = activity;</span>
+<span class="nc" id="L48">        this.list = list;</span>
+<span class="nc" id="L49">    }</span>
+
+    public void addAll(List&lt;RedditChildrenResponse&gt; addList) {
+<span class="nc" id="L52">        list.remove(list.size() - 1);</span>
+<span class="nc" id="L53">        notifyItemRemoved(list.size());</span>
+
+<span class="nc" id="L55">        list.addAll(addList);</span>
+<span class="nc" id="L56">        notifyItemInserted(list.size());</span>
+<span class="nc" id="L57">    }</span>
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (viewType == VIEW_ITEM) {</span>
+<span class="nc" id="L62">            View view = LayoutInflater.from(activity).inflate(R.layout.list_item, parent, false);</span>
+<span class="nc" id="L63">            return new PostsViewHolder(view);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        } else if (viewType == VIEW_PROG) {</span>
+<span class="nc" id="L65">            View view = LayoutInflater.from(activity).inflate(R.layout.footer_progress, parent, false);</span>
+<span class="nc" id="L66">            return new PostsProgressViewHolder(view);</span>
+        }
+
+<span class="nc" id="L69">        return null;</span>
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+<span class="nc bnc" id="L74" title="All 3 branches missed.">        switch (holder.getItemViewType()) {</span>
+            case VIEW_ITEM:
+<span class="nc" id="L76">                setHolderPosts(holder, position);</span>
+<span class="nc" id="L77">                break;</span>
+            case VIEW_PROG:
+<span class="nc" id="L79">                setHolderProgress(holder);</span>
+                break;
+        }
+<span class="nc" id="L82">    }</span>
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+<span class="nc" id="L86">        super.onViewDetachedFromWindow(holder);</span>
+<span class="nc" id="L87">        holder.itemView.clearAnimation();</span>
+<span class="nc" id="L88">    }</span>
+
+    @Override
+    public int getItemViewType(int position) {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (isPositionItem(position)) {</span>
+<span class="nc" id="L93">            return VIEW_PROG;</span>
+        }
+
+<span class="nc" id="L96">        return VIEW_ITEM;</span>
+    }
+
+    private boolean isPositionItem(int position) {
+<span class="nc bnc" id="L100" title="All 2 branches missed.">        return !(position != getItemCount()-1);</span>
+    }
+
+    private void setHolderProgress(RecyclerView.ViewHolder holder) {
+<span class="nc" id="L104">        PostsProgressViewHolder holderFooter = (PostsProgressViewHolder) holder;</span>
+<span class="nc" id="L105">        holderFooter.getProgressBar().setIndeterminate(true);</span>
+<span class="nc" id="L106">    }</span>
+
+    private void setHolderPosts(RecyclerView.ViewHolder holder, int position) {
+<span class="nc" id="L109">        PostsViewHolder holderPosts = (PostsViewHolder) holder;</span>
+<span class="nc" id="L110">        RedditNewsDataResponse data = list.get(position).getData();</span>
+<span class="nc" id="L111">        String url = list.get(position).getData().getUrl();</span>
+
+        // Set the data in views
+<span class="nc" id="L114">        holderPosts.title.setText(data.getTitle());</span>
+<span class="nc" id="L115">        holderPosts.author.setText(&quot;by &quot; + data.getAuthor());</span>
+<span class="nc" id="L116">        holderPosts.numComments.setText(data.getNumCommments());</span>
+<span class="nc" id="L117">        holderPosts.createdUTC.setText(new Global().timeDiff(data.getCreatedUTC()));</span>
+
+        // Click
+<span class="nc bnc" id="L120" title="All 4 branches missed.">        if (url != null &amp;&amp; !url.equals(&quot;&quot;) &amp;&amp;</span>
+<span class="nc bnc" id="L121" title="All 4 branches missed.">                (url.contains(&quot;https://&quot;) || url.contains(&quot;http://&quot;))) {</span>
+<span class="nc" id="L122">            setClickListener(holder.itemView, url);</span>
+        }
+
+<span class="nc bnc" id="L125" title="All 4 branches missed.">        if (!data.getThumbnail().equals(&quot;self&quot;) &amp;&amp; data.getPreview() != null) {</span>
+
+            // Get the image with the best resolution
+<span class="nc" id="L128">            Resolution resolution = BestResolution.search(App.getInstance(),</span>
+<span class="nc" id="L129">                    data.getPreview().getImages());</span>
+
+            // Set the height
+<span class="nc" id="L132">            holderPosts.thumbnail.setMinimumHeight(resolution.getHeight());</span>
+
+<span class="nc" id="L134">            Picasso.with(activity).load(resolution.getUrl()).into(holderPosts.thumbnail);</span>
+<span class="nc" id="L135">            holderPosts.thumbnail.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L136">        } else {</span>
+
+            // Remove the image view when not have a image
+<span class="nc" id="L139">            holderPosts.thumbnail.setVisibility(View.GONE);</span>
+        }
+
+<span class="nc" id="L142">        setAnimation(holder.itemView, position);</span>
+<span class="nc" id="L143">    }</span>
+
+    @Override
+    public int getItemCount() {
+<span class="nc" id="L147">        return list.size();</span>
+    }
+
+    private void setAnimation(View viewToAnimate, int position) {
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        Animation animation = AnimationUtils.loadAnimation(activity, (position &gt; lastPosition) ?</span>
+                R.anim.up_from_bottom : R.anim.down_from_top);
+<span class="nc" id="L153">        viewToAnimate.startAnimation(animation);</span>
+
+<span class="nc" id="L155">        lastPosition = position;</span>
+<span class="nc" id="L156">    }</span>
+
+    private void setClickListener(View view, String url) {
+<span class="nc" id="L159">        view.setOnClickListener(v -&gt; {</span>
+<span class="nc" id="L160">            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();</span>
+<span class="nc" id="L161">            builder.setStartAnimations(activity, R.anim.slide_in_right, R.anim.slide_out_left);</span>
+<span class="nc" id="L162">            builder.setExitAnimations(activity, R.anim.slide_in_left, R.anim.slide_out_right);</span>
+<span class="nc" id="L163">            builder.setToolbarColor(ContextCompat.getColor(activity, R.color.colorPrimary));</span>
+<span class="nc" id="L164">            CustomTabsIntent customTabsIntent = builder.build();</span>
+<span class="nc" id="L165">            customTabsIntent.launchUrl(activity, Uri.parse(url));</span>
+<span class="nc" id="L166">        });</span>
+<span class="nc" id="L167">    }</span>
+
+    public void scrollListener(RecyclerView recyclerView, PostsMVP.View view) {
+<span class="nc" id="L170">        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {</span>
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+<span class="nc bnc" id="L173" title="All 2 branches missed.">                if (dy &gt; 0) {</span>
+<span class="nc" id="L174">                    visibleItemCount = recyclerView.getLayoutManager().getChildCount();</span>
+<span class="nc" id="L175">                    totalItemCount = recyclerView.getLayoutManager().getItemCount();</span>
+
+                    // Verify if the device is tablet, because if is tablet the list is gridview
+<span class="nc bnc" id="L178" title="All 2 branches missed.">                    if (recyclerView.getLayoutManager() instanceof StaggeredGridLayoutManager) {</span>
+<span class="nc" id="L179">                        int[] firstVisibleItems = null;</span>
+<span class="nc" id="L180">                        firstVisibleItems = ((StaggeredGridLayoutManager) recyclerView</span>
+<span class="nc" id="L181">                                .getLayoutManager()).findFirstCompletelyVisibleItemPositions(</span>
+                                firstVisibleItems);
+
+<span class="nc bnc" id="L184" title="All 4 branches missed.">                        if(firstVisibleItems != null &amp;&amp; firstVisibleItems.length &gt; 0) {</span>
+<span class="nc" id="L185">                            pastVisibleItems = firstVisibleItems[0];</span>
+                        }
+<span class="nc" id="L187">                    } else {</span>
+<span class="nc" id="L188">                        pastVisibleItems = ((LinearLayoutManager) recyclerView</span>
+<span class="nc" id="L189">                                .getLayoutManager()).findFirstVisibleItemPosition();</span>
+                    }
+
+                    // If load data is ended, so load more items
+<span class="nc bnc" id="L193" title="All 2 branches missed.">                    if (loadMoreRequest) {</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">                        if ((visibleItemCount + pastVisibleItems) &gt;= totalItemCount) {</span>
+<span class="nc" id="L195">                            loadMoreRequest = false;</span>
+<span class="nc" id="L196">                            view.requestList(true);</span>
+                        }
+                    }
+                }
+<span class="nc" id="L200">            }</span>
+        });
+<span class="nc" id="L202">    }</span>
+
+    public void listLoaded() {
+<span class="nc" id="L205">        loadMoreRequest = true;</span>
+<span class="nc" id="L206">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

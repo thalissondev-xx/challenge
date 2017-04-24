@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PostsActivity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">br.com.challenge.activities.posts</a> &gt; <span class="el_source">PostsActivity.java</span></div><h1>PostsActivity.java</h1><pre class="source lang-java linenums">package br.com.challenge.activities.posts;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import br.com.challenge.R;
+import br.com.challenge.activities.posts.adapter.PostsAdapter;
+import br.com.challenge.activities.posts.injection.DaggerPostsComponent;
+import br.com.challenge.activities.posts.injection.PostsModule;
+import br.com.challenge.models.RedditChildrenResponse;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+<span class="nc" id="L29">public class PostsActivity extends AppCompatActivity implements PostsMVP.View {</span>
+
+    // Adapter of posts
+<span class="nc" id="L32">    private PostsAdapter adapter = null;</span>
+
+    // Views
+    @BindView(R.id.rvPosts) RecyclerView recyclerView;
+    @BindView(R.id.llProgress) LinearLayout llProgress;
+    @BindView(R.id.llError) LinearLayout llError;
+    @BindView(R.id.tvTryAgain) TextView tvTryAgain;
+    @BindView(R.id.tvErrorMessage) TextView tvErrorMessage;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+
+    // Presenter
+    @Inject PostsPresenter presenter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="nc" id="L47">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L48">        setContentView(R.layout.activity_posts);</span>
+
+        // Inject the views
+<span class="nc" id="L51">        ButterKnife.bind(this);</span>
+
+        // Set toolbar
+<span class="nc" id="L54">        setSupportActionBar(toolbar);</span>
+
+        // Inject the objects
+<span class="nc" id="L57">        DaggerPostsComponent</span>
+                .builder()
+<span class="nc" id="L59">                .postsModule(new PostsModule(this))</span>
+                .build()
+                .inject(this);
+
+        // Config
+<span class="nc" id="L64">        recyclerView.setItemAnimator(new DefaultItemAnimator());</span>
+
+<span class="nc" id="L66">        LinearLayoutManager linearManager = new LinearLayoutManager(this);</span>
+<span class="nc" id="L67">        StaggeredGridLayoutManager staggeredManager = new StaggeredGridLayoutManager(2,</span>
+                StaggeredGridLayoutManager.VERTICAL);
+
+        // Verify if is a tablet device
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (getResources().getBoolean(R.bool.isTablet)) {</span>
+<span class="nc" id="L72">            recyclerView.setLayoutManager(staggeredManager);</span>
+        } else {
+<span class="nc" id="L74">            recyclerView.setLayoutManager(linearManager);</span>
+        }
+
+        // Click for try again
+<span class="nc" id="L78">        tvTryAgain.setOnClickListener(v -&gt; requestList(true));</span>
+
+        // Request the list of posts
+<span class="nc" id="L81">        requestList(false);</span>
+<span class="nc" id="L82">    }</span>
+
+    @Override
+    public void showLoading() {
+<span class="nc" id="L86">        hideError();</span>
+<span class="nc" id="L87">        llProgress.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L88">    }</span>
+
+    @Override
+    public void hideLoading() {
+<span class="nc" id="L92">        llProgress.setVisibility(View.GONE);</span>
+<span class="nc" id="L93">    }</span>
+
+    @Override
+    public void showError(String message) {
+<span class="nc" id="L97">        hideLoading();</span>
+<span class="nc" id="L98">        tvErrorMessage.setText(message);</span>
+<span class="nc" id="L99">        llError.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L100">    }</span>
+
+    @Override
+    public void hideError() {
+<span class="nc" id="L104">        llError.setVisibility(View.GONE);</span>
+<span class="nc" id="L105">    }</span>
+
+    @Override
+    public void requestList(boolean loadMore) {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (!loadMore) {</span>
+<span class="nc" id="L110">            adapter = null;</span>
+        }
+
+<span class="nc" id="L113">        presenter.request(loadMore);</span>
+<span class="nc" id="L114">    }</span>
+
+    @Override
+    public void setAdapter(List&lt;RedditChildrenResponse&gt; list) {
+
+        // If not null, so add items in list and not create the new adapter
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (adapter != null) {</span>
+<span class="nc" id="L121">            adapter.addAll(list);</span>
+        } else {
+
+            // Create the adapter
+<span class="nc" id="L125">            adapter = new PostsAdapter(this, list);</span>
+
+            // Endless
+<span class="nc" id="L128">            adapter.scrollListener(recyclerView, this);</span>
+
+<span class="nc" id="L130">            recyclerView.setAdapter(adapter);</span>
+        }
+
+        // Now can load more
+<span class="nc" id="L134">        adapter.listLoaded();</span>
+<span class="nc" id="L135">    }</span>
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+<span class="nc" id="L139">        MenuInflater inflater = getMenuInflater();</span>
+<span class="nc" id="L140">        inflater.inflate(R.menu.menu, menu);</span>
+
+<span class="nc" id="L142">        return super.onCreateOptionsMenu(menu);</span>
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        switch (item.getItemId()) {</span>
+<span class="nc" id="L148">            case R.id.reload:</span>
+<span class="nc" id="L149">                requestList(false);</span>
+<span class="nc" id="L150">                break;</span>
+        }
+
+<span class="nc" id="L153">        return super.onOptionsItemSelected(item);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201603010439</span></div></body></html>

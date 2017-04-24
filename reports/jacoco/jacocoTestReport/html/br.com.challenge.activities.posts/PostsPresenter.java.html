@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostsPresenter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">app</a> &gt; <a href="index.source.html" class="el_package">br.com.challenge.activities.posts</a> &gt; <span class="el_source">PostsPresenter.java</span></div><h1>PostsPresenter.java</h1><pre class="source lang-java linenums">package br.com.challenge.activities.posts;
+
+import javax.inject.Inject;
+
+import br.com.challenge.models.RedditDataResponse;
+import br.com.challenge.networking.RedditService;
+import br.com.challenge.utils.Global;
+
+/**
+ * Created by thalissonestrela on 4/16/17.
+ */
+
+public class PostsPresenter implements PostsMVP.Presenter.OnRequestFinishedListener {
+<span class="fc" id="L14">    public final String rowJson = &quot;1&quot;;</span>
+<span class="fc" id="L15">    public final String limit = &quot;20&quot;;</span>
+<span class="fc" id="L16">    private String after = null;</span>
+
+    PostsInteractor interactor;
+    RedditService service;
+    PostsMVP.View view;
+
+    @Inject
+<span class="fc" id="L23">    public PostsPresenter(PostsMVP.View view, PostsInteractor interactor, RedditService service) {</span>
+<span class="fc" id="L24">        this.interactor = interactor;</span>
+<span class="fc" id="L25">        this.service = service;</span>
+<span class="fc" id="L26">        this.view = view;</span>
+<span class="fc" id="L27">    }</span>
+
+    public void request(boolean loadMore) {
+
+        // If reload is true, so reload the list
+<span class="pc bpc" id="L32" title="3 of 4 branches missed.">        if (!loadMore || after == null) {</span>
+<span class="fc" id="L33">            after = null;</span>
+<span class="fc" id="L34">            view.showLoading();</span>
+        }
+
+<span class="fc" id="L37">        interactor.list(after, limit, rowJson, service, this);</span>
+<span class="fc" id="L38">    }</span>
+
+    @Override
+    public void onSuccess(RedditDataResponse dataResponse) {
+
+        // Update the variable &quot;after&quot; for load more
+<span class="fc" id="L44">        after = dataResponse.getAfter();</span>
+
+        // Set the adapter
+<span class="fc" id="L47">        view.setAdapter(dataResponse.getChildren());</span>
+<span class="fc" id="L48">        view.hideLoading();</span>
+<span class="fc" id="L49">    }</span>
+
+    @Override
+    public void onError(String msg) {
+<span class="fc" id="L53">        view.showError(msg);</span>
+<span class="fc" id="L54">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
