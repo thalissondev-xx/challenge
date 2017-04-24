@@ -14,7 +14,7 @@ public class RedditNewsDataResponse {
     private PreviewResolution preview;
 
     @SerializedName("num_comments") private String numCommments;
-    @SerializedName("created") private long createdUTC;
+    @SerializedName("created_utc") private long createdUTC;
 
     public String getAuthor() {
         return author;

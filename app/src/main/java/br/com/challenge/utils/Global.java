@@ -29,29 +29,19 @@ public class Global {
     }
 
     public String timeDiff(long unixTime) {
-        Date createdAt = new Date(Double.valueOf(unixTime).longValue() * 1000);
-        long elapsed = System.currentTimeMillis() - createdAt.getTime();
 
-        long diffSeconds = TimeUnit.MILLISECONDS.toSeconds(elapsed);
-        long diffMinutes = TimeUnit.MILLISECONDS.toMinutes(elapsed);
-        long diffHours = TimeUnit.MILLISECONDS.toHours(elapsed);
-        long diffDays = TimeUnit.MILLISECONDS.toDays(elapsed);
-        long diffWeeks = diffDays / 7;
-
-        if (diffWeeks > 0) {
-            return diffWeeks + " weeks";
-        }
-        else if (diffDays > 0) {
-            return diffDays + " days";
-        }
-        else if (diffHours > 0) {
-            return diffHours + " hours";
-        }
-        else if (diffMinutes > 0) {
-            return diffMinutes + " minutes";
-        }
-        else {
-            return diffSeconds + " seconds";
+        // Set entry date in format like the official reddit client
+        long elapsed = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()) - unixTime;
+        if (TimeUnit.SECONDS.toMinutes(elapsed) < 2) {
+            return "now";
+        } else if (TimeUnit.SECONDS.toDays(elapsed) >= 1) {
+            return TimeUnit.SECONDS.toDays(elapsed) + "d";
+        } else if (TimeUnit.SECONDS.toHours(elapsed) >= 1) {
+            return TimeUnit.SECONDS.toHours(elapsed) + "h";
+        } else if (TimeUnit.SECONDS.toMinutes(elapsed) >= 1) {
+            return TimeUnit.SECONDS.toMinutes(elapsed) + "m";
+        } else {
+            return "now";
         }
     }
 
