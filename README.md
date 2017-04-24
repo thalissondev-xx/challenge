@@ -15,14 +15,14 @@ For build /app/app-release.apk
 
 ## Libraries used:
 
-- Dagger 2.0.1
-- Retrofit 2.0
+- Dagger 2
+- Retrofit 2
 - RxJava
 - RxAndroid
 - Picasso
 - Gson
 - OkHttp
-- Butter Knife 8.5.1
+- ButterKnife
 - Mockito
 
 ## Screens
